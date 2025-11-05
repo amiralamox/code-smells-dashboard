@@ -81,7 +81,25 @@ def apply_discount(total, coupon):
           'Keep each method at a single level of abstraction',
           'Ensure methods are 5-10 lines maximum'
         ],
-        techniques: ['Extract Method', 'Replace Temp with Query', 'Introduce Parameter Object']
+        techniques: ['Extract Method', 'Replace Temp with Query', 'Introduce Parameter Object'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/order-service/app/Services/OrderService.php',
+            line: 89,
+            method: 'mergeOrdersToShip()',
+            description: 'Order merging method with 200+ lines handling validation, fetching, merging items, logging, and error handling',
+            metrics: { lines: '200+', complexity: 'Very High' }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/order/hooks/useGetMenuConfig.tsx',
+            line: 126,
+            method: 'useGetMenuConfig()',
+            description: 'Menu configuration builder with 368 lines of deeply nested conditionals for different order states',
+            metrics: { lines: 368, complexity: 'Very High' }
+          }
+        ]
       },
       {
         name: 'Large Class',
@@ -160,7 +178,33 @@ class OrderService:
           'Apply Single Responsibility Principle',
           'Consider using design patterns (Repository, Service)'
         ],
-        techniques: ['Extract Class', 'Extract Subclass', 'Extract Interface']
+        techniques: ['Extract Class', 'Extract Subclass', 'Extract Interface'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/order-service/app/Services/OrderService.php',
+            line: 1,
+            method: 'OrderService class',
+            description: 'God class with 2,239 lines, 18 methods, and 16 repository dependencies handling orders, shipments, and legacy sync',
+            metrics: { lines: 2239, methods: 18, dependencies: 16 }
+          },
+          {
+            language: 'PHP',
+            file: 'services/billing-engine/app/Services/TeamSystemService.php',
+            line: 1,
+            method: 'TeamSystemService class',
+            description: 'Service with 907 lines, 22 methods handling invoice creation, customer lookup, consumption billing, and PDF generation',
+            metrics: { lines: 907, methods: 22 }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/_global/hooks/useSideMenuLinks.tsx',
+            line: 1,
+            method: 'useSideMenuLinks hook',
+            description: 'Hook with 661 lines managing 70+ feature flags, 15+ API calls, multiple paywalls, and nested menu structures',
+            metrics: { lines: 661, featureFlags: '70+' }
+          }
+        ]
       },
       {
         name: 'Long Parameter List',
@@ -323,7 +367,25 @@ def process_payment(money: Money):
           'Move related behavior into the value object',
           'Replace primitives with value objects throughout code'
         ],
-        techniques: ['Replace Data Value with Object', 'Replace Type Code with Class']
+        techniques: ['Replace Data Value with Object', 'Replace Type Code with Class'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/rates-engine/app/Services/LegacyOrderMapper.php',
+            line: 23,
+            method: 'mapToOrder()',
+            description: 'Mapper passing 20+ individual address fields (street1, street2, city, state, zip, country) instead of Address value object',
+            metrics: { parameters: '20+', impact: 'Parameter confusion bug' }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/order/hooks/useGetMenuConfig.tsx',
+            line: 66,
+            method: 'useGetMenuConfig()',
+            description: 'Order status checked with raw strings and magic numbers ("2", booleans) instead of typed OrderState object',
+            metrics: { primitiveChecks: 'Multiple', impact: 'Type safety issues' }
+          }
+        ]
       }
     ],
     objectOrientationAbusers: [
@@ -578,7 +640,25 @@ class PasswordReset:
           'Replace all occurrences with method call',
           'Consider creating a utility class for shared code'
         ],
-        techniques: ['Extract Method', 'Pull Up Method', 'Form Template Method']
+        techniques: ['Extract Method', 'Pull Up Method', 'Form Template Method'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/usage-metering-engine/app/Http/Controllers/Api/V2/UsageController.php',
+            line: 54,
+            method: 'getEntityUsage()',
+            description: 'Identical entity operation pattern duplicated across UsageController, BillingInfoController, and other controllers',
+            metrics: { duplication: '80%', occurrences: '3+' }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/order/hooks/api/useArchiveOrders.tsx',
+            line: 1,
+            method: 'useArchiveOrders, useUnarchiveOrders, useDeleteOrders',
+            description: 'Three nearly identical hooks with same structure, error handling, and context usage - only API endpoint differs',
+            metrics: { duplication: '80%', files: 3 }
+          }
+        ]
       },
       {
         name: 'Dead Code',
@@ -614,7 +694,33 @@ class UserService:
           'Delete unused methods and classes',
           'Remove unreachable code paths'
         ],
-        techniques: ['Delete the code', 'Inline Method']
+        techniques: ['Delete the code', 'Inline Method'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/order-service/app/Services/OrderService.php',
+            line: 129,
+            method: 'mergeOrdersToShip()',
+            description: '26 lines of commented-out code for "new flow" with FIXME note - disabled but not removed',
+            metrics: { commentedLines: 26, note: 'FIXME: temporarily disabled' }
+          },
+          {
+            language: 'PHP',
+            file: 'services/billing-engine/app/Http/Controllers/BillingInfoController.php',
+            line: 14,
+            method: 'Entire controller',
+            description: 'Controller wrapped in @codeCoverageIgnoreStart/End with comment "not going to be supported anymore"',
+            metrics: { status: 'Deprecated', awaitingRemoval: true }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/order/hooks/useGetMenuConfig.tsx',
+            line: 93,
+            method: 'useSendOrdersMail',
+            description: 'Hook imported and declared but explicitly marked as unused with ESLint disable comment',
+            metrics: { status: 'Dead import', eslintDisabled: true }
+          }
+        ]
       },
       {
         name: 'Speculative Generality',
@@ -662,7 +768,33 @@ class DatabaseSource:
           'Collapse hierarchies with single implementation',
           'Remove unused parameters and methods'
         ],
-        techniques: ['Collapse Hierarchy', 'Inline Class', 'Remove Parameter']
+        techniques: ['Collapse Hierarchy', 'Inline Class', 'Remove Parameter'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/shipping-engine/app/Services/ShipmentService.php',
+            line: 50,
+            method: 'getShipmentDetails()',
+            description: 'Method stub with TODO comment returning empty array - built before needed (YAGNI violation)',
+            metrics: { implemented: false, status: 'Always returns []' }
+          },
+          {
+            language: 'PHP',
+            file: 'services/billing-engine/app/Services/TeamSystemService.php',
+            line: 158,
+            method: 'mapUsageToItemWH property',
+            description: 'Array mapping with 3 entries marked "FIXME: Not found on TeamSystem" - speculative features that don\'t exist',
+            metrics: { fixmeCount: 3, unusableEntries: 3 }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/manage-order-modal/components/edit-views/edit-address/components/forms/AddressForm/components.tsx',
+            line: 59,
+            method: 'AddressFormProps type',
+            description: 'Complex type allowing per-field customization, but feature is never used - customFieldsProps always undefined',
+            metrics: { complexity: 'High', usage: 'Never' }
+          }
+        ]
       }
     ],
     couplers: [
@@ -705,7 +837,25 @@ class OrderReport:
           'Update callers to use new location',
           'Keep data and behavior together'
         ],
-        techniques: ['Move Method', 'Extract Method']
+        techniques: ['Move Method', 'Extract Method'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/billing-engine/app/Http/Controllers/BillingInfoController.php',
+            line: 119,
+            method: 'validateVat()',
+            description: 'Controller method doing complex business logic - accesses VatValidation and BillingInfo internals, checks Shopify payment',
+            metrics: { responsibility: 'Business logic in controller', coupling: 'High' }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/ship/components/tables/blocks/DocumentationIcon.tsx',
+            line: 42,
+            method: 'DocumentationIcon component',
+            description: 'Component spending most logic manipulating order.documentation array structure instead of own rendering logic',
+            metrics: { dataAccess: 'Heavy', ownLogic: 'Minimal' }
+          }
+        ]
       },
       {
         name: 'Message Chains',
@@ -740,7 +890,25 @@ class App:
           'Hide the intermediate chain',
           'Reduce coupling to navigation structure'
         ],
-        techniques: ['Hide Delegate', 'Extract Method']
+        techniques: ['Hide Delegate', 'Extract Method'],
+        realExamples: [
+          {
+            language: 'PHP',
+            file: 'services/order-service/app/Services/OrderService.php',
+            line: 218,
+            method: 'mergeOrdersToShip()',
+            description: 'Chaining drupalRepository->findRecords()->collect()->keyBy()->md5() - violates Law of Demeter',
+            metrics: { chainLength: '4+', coupling: 'High' }
+          },
+          {
+            language: 'TypeScript',
+            file: 'features/_global/hooks/useSideMenuLinks.tsx',
+            line: 153,
+            method: 'Feature availability checks',
+            description: 'Multiple uses of useCheckAvailableFeature().data?.is_feature_available - three-level property access',
+            metrics: { chainLength: 3, occurrences: '3+' }
+          }
+        ]
       },
       {
         name: 'Middle Man',
@@ -1526,18 +1694,24 @@ function renderWorkshopSmells() {
     return a.name.localeCompare(b.name);
   });
 
-  // Render
-  let html = `
-    <div class="category expanded">
-      <div class="category-header">
-        <div class="category-title">
-          <span class="category-toggle">▶</span>
-          Session 1 Code Smells
-        </div>
-        <span class="category-count">${workshopSmells.length}</span>
-      </div>
-      <ul class="smell-list">
+  // Render using DOM elements instead of innerHTML to avoid JSON.stringify issues
+  nav.innerHTML = ''; // Clear existing content
+
+  const category = document.createElement('div');
+  category.className = 'category expanded';
+
+  const header = document.createElement('div');
+  header.className = 'category-header';
+  header.innerHTML = `
+    <div class="category-title">
+      <span class="category-toggle">▶</span>
+      Session 1 Code Smells
+    </div>
+    <span class="category-count">${workshopSmells.length}</span>
   `;
+
+  const list = document.createElement('ul');
+  list.className = 'smell-list';
 
   let visibleCount = 0;
   workshopSmells.forEach(smell => {
@@ -1548,31 +1722,34 @@ function renderWorkshopSmells() {
 
     visibleCount++;
     const isLearned = learnedSmells.includes(smell.name);
-    const isActive = currentSmell?.name === smell.name ? 'active' : '';
-    const learnedClass = isLearned ? 'learned' : '';
-    const learnedCheck = isLearned ? '<span class="learned-check">✓</span>' : '';
+    const isActive = currentSmell?.name === smell.name;
 
-    html += `
-      <li class="smell-item ${isActive} ${learnedClass}"
-          onclick='displaySmell(${JSON.stringify(smell).replace(/'/g, "&#39;")})'>
-        ${smell.name}
-        ${learnedCheck}
-      </li>
-    `;
+    const li = document.createElement('li');
+    li.className = 'smell-item' + (isActive ? ' active' : '') + (isLearned ? ' learned' : '');
+
+    // Add smell name as text node
+    li.appendChild(document.createTextNode(smell.name));
+
+    if (isLearned) {
+      const check = document.createElement('span');
+      check.className = 'learned-check';
+      check.textContent = '✓';
+      li.appendChild(check);
+    }
+
+    // Use proper event handler instead of inline onclick
+    li.onclick = () => displaySmell(smell);
+    list.appendChild(li);
   });
 
-  html += '</ul></div>';
-  nav.innerHTML = html;
-
   // Setup category toggle
-  const header = nav.querySelector('.category-header');
-  const category = nav.querySelector('.category');
+  header.onclick = () => {
+    category.classList.toggle('expanded');
+  };
 
-  if (header) {
-    header.onclick = () => {
-      category.classList.toggle('expanded');
-    };
-  }
+  category.appendChild(header);
+  category.appendChild(list);
+  nav.appendChild(category);
 
   // Auto-expand if search has results, keep expanded if no search
   if (searchTerm) {
@@ -1621,7 +1798,7 @@ function createCategory(key, smells) {
     const li = document.createElement('li');
     li.className = 'smell-item';
     li.textContent = smell.name;
-    li.onclick = () => displaySmell({ ...smell, category: categoryNames[key] });
+    li.onclick = () => displaySmell({ ...smell, category: categoryInfo[key].name });
     list.appendChild(li);
   });
 
@@ -1784,6 +1961,49 @@ function displaySmell(smell) {
     }
   };
 
+  // Real Examples section
+  const realExamplesSection = document.getElementById('realExamplesSection');
+  if (smell.realExamples && smell.realExamples.length > 0) {
+    realExamplesSection.style.display = 'block';
+
+    const realExamplesList = document.getElementById('realExamplesList');
+    realExamplesList.innerHTML = '';
+
+    smell.realExamples.forEach(example => {
+      const card = document.createElement('div');
+      card.className = 'real-example-card';
+
+      // Metrics display
+      let metricsHTML = '';
+      if (example.metrics) {
+        const metricItems = Object.entries(example.metrics)
+          .map(([key, value]) => `<span class="metric-item">${key}: ${value}</span>`)
+          .join('');
+        metricsHTML = `<div class="example-metrics">${metricItems}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="example-header">
+          <span class="language-badge language-badge--${example.language.toLowerCase()}">${example.language}</span>
+        </div>
+        <div class="example-file">
+          <code>${example.file}:${example.line}</code>
+        </div>
+        <div class="example-method">
+          <strong>${example.method || example.function}</strong>
+        </div>
+        <div class="example-description">
+          ${example.description}
+        </div>
+        ${metricsHTML}
+      `;
+
+      realExamplesList.appendChild(card);
+    });
+  } else {
+    realExamplesSection.style.display = 'none';
+  }
+
   // Scroll to top
   document.querySelector('.main-content').scrollTop = 0;
 }
@@ -1877,6 +2097,23 @@ function setupEventListeners() {
       if (currentSmell) {
         displaySmell(currentSmell);
       }
+    }
+  });
+
+  // Real Examples collapsible toggle
+  document.getElementById('realExamplesToggle')?.addEventListener('click', () => {
+    const content = document.getElementById('realExamplesContent');
+    const toggle = document.getElementById('realExamplesToggle');
+    const icon = toggle.querySelector('.toggle-icon');
+
+    if (content.style.display === 'none' || content.style.display === '') {
+      content.style.display = 'block';
+      icon.textContent = '▲';
+      toggle.classList.add('open');
+    } else {
+      content.style.display = 'none';
+      icon.textContent = '▼';
+      toggle.classList.remove('open');
     }
   });
 }
