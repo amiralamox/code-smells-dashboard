@@ -645,10 +645,10 @@ class PasswordReset:
           {
             language: 'PHP',
             file: 'services/usage-metering-engine/app/Http/Controllers/Api/V2/UsageController.php',
-            line: 54,
-            method: 'getEntityUsage()',
-            description: 'Identical entity operation pattern duplicated across UsageController, BillingInfoController, and other controllers',
-            metrics: { duplication: '80%', occurrences: '3+' }
+            line: 109,
+            method: 'getUserMetricUsage() and getUserCategoryUsage()',
+            description: 'Nearly identical input validation logic (start_datetime, end_datetime, resolution) duplicated between getUserMetricUsage() (lines 109-125) and getUserCategoryUsage() (lines 484-500)',
+            metrics: { duplication: '85%', lines: '17 lines each' }
           },
           {
             language: 'TypeScript',
@@ -839,14 +839,6 @@ class OrderReport:
         ],
         techniques: ['Move Method', 'Extract Method'],
         realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/billing-engine/app/Http/Controllers/BillingInfoController.php',
-            line: 119,
-            method: 'validateVat()',
-            description: 'Controller method doing complex business logic - accesses VatValidation and BillingInfo internals, checks Shopify payment',
-            metrics: { responsibility: 'Business logic in controller', coupling: 'High' }
-          },
           {
             language: 'TypeScript',
             file: 'features/ship/components/tables/blocks/DocumentationIcon.tsx',
