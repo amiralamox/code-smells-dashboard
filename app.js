@@ -1546,9 +1546,6 @@ function renderWorkshopSmells() {
   html += '</ul></div>';
   nav.innerHTML = html;
 
-  // Update total count
-  updateStats(workshopSmells.length);
-
   // Setup category toggle
   const header = nav.querySelector('.category-header');
   if (header) {
@@ -1773,6 +1770,7 @@ function setupEventListeners() {
       searchTerm = '';
       document.getElementById('searchInput').value = '';
       renderSidebar();
+      updateStats();
     });
   });
 
