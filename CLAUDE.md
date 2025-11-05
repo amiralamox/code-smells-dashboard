@@ -62,8 +62,9 @@ JSON files contain structured code smell data:
 - `aws_lambda_code_smells.json` - Lambda-specific smells
 - `python_code_smell_examples.json` - Python code examples
 - `lambda_code_smell_examples.json` - Lambda code examples
+- **`shippypro_real_examples.json`** - Real-world examples from ShippyPro codebase
 
-**Important**: The main data source is embedded in `app.js` as the `codeSmells` object. The JSON files may be used for reference or external consumption.
+**Important**: The main data source is embedded in `app.js` as the `codeSmells` object. ShippyPro real examples are stored in `shippypro_real_examples.json` and loaded dynamically at runtime. The JSON files may be used for reference or external consumption.
 
 ### Code Smell Object Schema
 
@@ -131,6 +132,79 @@ codeSmells.lambda.push({
 ```
 
 2. No additional rendering code needed - the display logic is generic
+
+### Managing ShippyPro Real Examples
+
+Real-world examples from the ShippyPro codebase are stored in `shippypro_real_examples.json` and loaded dynamically at runtime. This separation makes it easy to add, update, or remove examples without modifying `app.js`.
+
+**File Structure:**
+```json
+{
+  "Code Smell Name": [
+    {
+      "language": "PHP" | "TypeScript",
+      "file": "path/to/file.php",
+      "line": 123,
+      "method": "methodName()",
+      "description": "Brief description of the smell",
+      "metrics": { "key": "value" }
+    }
+  ]
+}
+```
+
+**Adding a Real Example:**
+
+1. Open `shippypro_real_examples.json`
+2. Find the code smell name (must match exactly the `name` in `app.js`)
+3. Add a new object to the array:
+
+```json
+{
+  "Long Method": [
+    {
+      "language": "PHP",
+      "file": "services/your-service/app/YourClass.php",
+      "line": 100,
+      "method": "yourMethod()",
+      "description": "What makes this a long method",
+      "metrics": { "lines": 200, "complexity": "Very High" }
+    }
+  ]
+}
+```
+
+4. No changes to `app.js` needed - examples load automatically!
+
+**Removing a Real Example:**
+
+1. Open `shippypro_real_examples.json`
+2. Find the code smell and remove the object from its array
+3. If removing the last example, you can either:
+   - Leave an empty array: `"Code Smell Name": []`
+   - Or remove the key entirely
+
+**Verifying Examples:**
+
+The real examples reference actual ShippyPro code at:
+- **PHP services**: `/Users/amir/Development/work/services-monorepo/services/`
+- **TypeScript/React**: `/Users/amir/Development/work/app.shippypro.com/apps/web/src/`
+
+To verify an example still exists:
+```bash
+# PHP example
+cat /Users/amir/Development/work/services-monorepo/services/order-service/app/Services/OrderService.php | head -n 200
+
+# TypeScript example
+cat /Users/amir/Development/work/app.shippypro.com/apps/web/src/features/order/hooks/useGetMenuConfig.tsx
+```
+
+**Loading Behavior:**
+
+- Examples are loaded asynchronously when the app starts
+- If the JSON file is missing, the app continues without errors (warning in console)
+- If a code smell has no `realExamples`, the "Real Examples from ShippyPro Codebase" section is hidden
+- Console shows `✅ Loaded ShippyPro real examples` on success
 
 ### Modifying Styles
 

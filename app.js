@@ -81,25 +81,7 @@ def apply_discount(total, coupon):
           'Keep each method at a single level of abstraction',
           'Ensure methods are 5-10 lines maximum'
         ],
-        techniques: ['Extract Method', 'Replace Temp with Query', 'Introduce Parameter Object'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/order-service/app/Services/OrderService.php',
-            line: 89,
-            method: 'mergeOrdersToShip()',
-            description: 'Order merging method with 200+ lines handling validation, fetching, merging items, logging, and error handling',
-            metrics: { lines: '200+', complexity: 'Very High' }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/order/hooks/useGetMenuConfig.tsx',
-            line: 126,
-            method: 'useGetMenuConfig()',
-            description: 'Menu configuration builder with 368 lines of deeply nested conditionals for different order states',
-            metrics: { lines: 368, complexity: 'Very High' }
-          }
-        ]
+        techniques: ['Extract Method', 'Replace Temp with Query', 'Introduce Parameter Object']
       },
       {
         name: 'Large Class',
@@ -178,33 +160,7 @@ class OrderService:
           'Apply Single Responsibility Principle',
           'Consider using design patterns (Repository, Service)'
         ],
-        techniques: ['Extract Class', 'Extract Subclass', 'Extract Interface'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/order-service/app/Services/OrderService.php',
-            line: 1,
-            method: 'OrderService class',
-            description: 'God class with 2,239 lines, 18 methods, and 16 repository dependencies handling orders, shipments, and legacy sync',
-            metrics: { lines: 2239, methods: 18, dependencies: 16 }
-          },
-          {
-            language: 'PHP',
-            file: 'services/billing-engine/app/Services/TeamSystemService.php',
-            line: 1,
-            method: 'TeamSystemService class',
-            description: 'Service with 907 lines, 22 methods handling invoice creation, customer lookup, consumption billing, and PDF generation',
-            metrics: { lines: 907, methods: 22 }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/_global/hooks/useSideMenuLinks.tsx',
-            line: 1,
-            method: 'useSideMenuLinks hook',
-            description: 'Hook with 661 lines managing 70+ feature flags, 15+ API calls, multiple paywalls, and nested menu structures',
-            metrics: { lines: 661, featureFlags: '70+' }
-          }
-        ]
+        techniques: ['Extract Class', 'Extract Subclass', 'Extract Interface']
       },
       {
         name: 'Long Parameter List',
@@ -367,25 +323,7 @@ def process_payment(money: Money):
           'Move related behavior into the value object',
           'Replace primitives with value objects throughout code'
         ],
-        techniques: ['Replace Data Value with Object', 'Replace Type Code with Class'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/rates-engine/app/Services/LegacyOrderMapper.php',
-            line: 23,
-            method: 'mapToOrder()',
-            description: 'Mapper passing 20+ individual address fields (street1, street2, city, state, zip, country) instead of Address value object',
-            metrics: { parameters: '20+', impact: 'Parameter confusion bug' }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/order/hooks/useGetMenuConfig.tsx',
-            line: 66,
-            method: 'useGetMenuConfig()',
-            description: 'Order status checked with raw strings and magic numbers ("2", booleans) instead of typed OrderState object',
-            metrics: { primitiveChecks: 'Multiple', impact: 'Type safety issues' }
-          }
-        ]
+        techniques: ['Replace Data Value with Object', 'Replace Type Code with Class']
       }
     ],
     objectOrientationAbusers: [
@@ -640,25 +578,7 @@ class PasswordReset:
           'Replace all occurrences with method call',
           'Consider creating a utility class for shared code'
         ],
-        techniques: ['Extract Method', 'Pull Up Method', 'Form Template Method'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/usage-metering-engine/app/Http/Controllers/Api/V2/UsageController.php',
-            line: 109,
-            method: 'getUserMetricUsage() and getUserCategoryUsage()',
-            description: 'Nearly identical input validation logic (start_datetime, end_datetime, resolution) duplicated between getUserMetricUsage() (lines 109-125) and getUserCategoryUsage() (lines 484-500)',
-            metrics: { duplication: '85%', lines: '17 lines each' }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/order/hooks/api/useArchiveOrders.tsx',
-            line: 1,
-            method: 'useArchiveOrders, useUnarchiveOrders, useDeleteOrders',
-            description: 'Three nearly identical hooks with same structure, error handling, and context usage - only API endpoint differs',
-            metrics: { duplication: '80%', files: 3 }
-          }
-        ]
+        techniques: ['Extract Method', 'Pull Up Method', 'Form Template Method']
       },
       {
         name: 'Dead Code',
@@ -694,33 +614,7 @@ class UserService:
           'Delete unused methods and classes',
           'Remove unreachable code paths'
         ],
-        techniques: ['Delete the code', 'Inline Method'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/order-service/app/Services/OrderService.php',
-            line: 129,
-            method: 'mergeOrdersToShip()',
-            description: '26 lines of commented-out code for "new flow" with FIXME note - disabled but not removed',
-            metrics: { commentedLines: 26, note: 'FIXME: temporarily disabled' }
-          },
-          {
-            language: 'PHP',
-            file: 'services/billing-engine/app/Http/Controllers/BillingInfoController.php',
-            line: 14,
-            method: 'Entire controller',
-            description: 'Controller wrapped in @codeCoverageIgnoreStart/End with comment "not going to be supported anymore"',
-            metrics: { status: 'Deprecated', awaitingRemoval: true }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/order/hooks/useGetMenuConfig.tsx',
-            line: 93,
-            method: 'useSendOrdersMail',
-            description: 'Hook imported and declared but explicitly marked as unused with ESLint disable comment',
-            metrics: { status: 'Dead import', eslintDisabled: true }
-          }
-        ]
+        techniques: ['Delete the code', 'Inline Method']
       },
       {
         name: 'Speculative Generality',
@@ -768,33 +662,7 @@ class DatabaseSource:
           'Collapse hierarchies with single implementation',
           'Remove unused parameters and methods'
         ],
-        techniques: ['Collapse Hierarchy', 'Inline Class', 'Remove Parameter'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/shipping-engine/app/Services/ShipmentService.php',
-            line: 50,
-            method: 'getShipmentDetails()',
-            description: 'Method stub with TODO comment returning empty array - built before needed (YAGNI violation)',
-            metrics: { implemented: false, status: 'Always returns []' }
-          },
-          {
-            language: 'PHP',
-            file: 'services/billing-engine/app/Services/TeamSystemService.php',
-            line: 158,
-            method: 'mapUsageToItemWH property',
-            description: 'Array mapping with 3 entries marked "FIXME: Not found on TeamSystem" - speculative features that don\'t exist',
-            metrics: { fixmeCount: 3, unusableEntries: 3 }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/manage-order-modal/components/edit-views/edit-address/components/forms/AddressForm/components.tsx',
-            line: 59,
-            method: 'AddressFormProps type',
-            description: 'Complex type allowing per-field customization, but feature is never used - customFieldsProps always undefined',
-            metrics: { complexity: 'High', usage: 'Never' }
-          }
-        ]
+        techniques: ['Collapse Hierarchy', 'Inline Class', 'Remove Parameter']
       }
     ],
     couplers: [
@@ -837,17 +705,7 @@ class OrderReport:
           'Update callers to use new location',
           'Keep data and behavior together'
         ],
-        techniques: ['Move Method', 'Extract Method'],
-        realExamples: [
-          {
-            language: 'TypeScript',
-            file: 'features/ship/components/tables/blocks/DocumentationIcon.tsx',
-            line: 42,
-            method: 'DocumentationIcon component',
-            description: 'Component spending most logic manipulating order.documentation array structure instead of own rendering logic',
-            metrics: { dataAccess: 'Heavy', ownLogic: 'Minimal' }
-          }
-        ]
+        techniques: ['Move Method', 'Extract Method']
       },
       {
         name: 'Message Chains',
@@ -882,25 +740,7 @@ class App:
           'Hide the intermediate chain',
           'Reduce coupling to navigation structure'
         ],
-        techniques: ['Hide Delegate', 'Extract Method'],
-        realExamples: [
-          {
-            language: 'PHP',
-            file: 'services/order-service/app/Services/OrderService.php',
-            line: 218,
-            method: 'mergeOrdersToShip()',
-            description: 'Chaining drupalRepository->findRecords()->collect()->keyBy()->md5() - violates Law of Demeter',
-            metrics: { chainLength: '4+', coupling: 'High' }
-          },
-          {
-            language: 'TypeScript',
-            file: 'features/_global/hooks/useSideMenuLinks.tsx',
-            line: 153,
-            method: 'Feature availability checks',
-            description: 'Multiple uses of useCheckAvailableFeature().data?.is_feature_available - three-level property access',
-            metrics: { chainLength: 3, occurrences: '3+' }
-          }
-        ]
+        techniques: ['Hide Delegate', 'Extract Method']
       },
       {
         name: 'Middle Man',
@@ -2252,9 +2092,40 @@ window.addEventListener('load', () => {
   }
 });
 
+// Load real examples from external JSON file
+async function loadRealExamples() {
+  try {
+    const response = await fetch('shippypro_real_examples.json');
+    if (!response.ok) {
+      console.warn('Could not load ShippyPro real examples');
+      return;
+    }
+
+    const realExamples = await response.json();
+
+    // Merge real examples into general code smells
+    Object.keys(codeSmells.general).forEach(categoryKey => {
+      codeSmells.general[categoryKey].forEach(smell => {
+        if (realExamples[smell.name]) {
+          smell.realExamples = realExamples[smell.name];
+        }
+      });
+    });
+
+    console.log('✅ Loaded ShippyPro real examples');
+  } catch (error) {
+    console.warn('Failed to load real examples:', error);
+  }
+}
+
 // Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
+async function startApp() {
+  await loadRealExamples();
   init();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
 }
