@@ -45,14 +45,6 @@
   ],
   "Primitive Obsession": [
     {
-      "language": "PHP",
-      "file": "services/rates-engine/app/Services/LegacyOrderMapper.php",
-      "line": 23,
-      "method": "mapToOrder()",
-      "description": "Mapper passing 20+ individual address fields (street1, street2, city, state, zip, country) instead of Address value object",
-      "metrics": { "parameters": "20+", "impact": "Parameter confusion bug" }
-    },
-    {
       "language": "TypeScript",
       "file": "features/order/hooks/useGetMenuConfig.tsx",
       "line": 66,
@@ -87,33 +79,9 @@
       "method": "mergeOrdersToShip()",
       "description": "26 lines of commented-out code for \"new flow\" with FIXME note - disabled but not removed",
       "metrics": { "commentedLines": 26, "note": "FIXME: temporarily disabled" }
-    },
-    {
-      "language": "PHP",
-      "file": "services/billing-engine/app/Http/Controllers/BillingInfoController.php",
-      "line": 14,
-      "method": "Entire controller",
-      "description": "Controller wrapped in @codeCoverageIgnoreStart/End with comment \"not going to be supported anymore\"",
-      "metrics": { "status": "Deprecated", "awaitingRemoval": true }
-    },
-    {
-      "language": "TypeScript",
-      "file": "features/order/hooks/useGetMenuConfig.tsx",
-      "line": 93,
-      "method": "useSendOrdersMail",
-      "description": "Hook imported and declared but explicitly marked as unused with ESLint disable comment",
-      "metrics": { "status": "Dead import", "eslintDisabled": true }
     }
   ],
   "Speculative Generality": [
-    {
-      "language": "PHP",
-      "file": "services/shipping-engine/app/Services/ShipmentService.php",
-      "line": 50,
-      "method": "getShipmentDetails()",
-      "description": "Method stub with TODO comment returning empty array - built before needed (YAGNI violation)",
-      "metrics": { "implemented": false, "status": "Always returns []" }
-    },
     {
       "language": "PHP",
       "file": "services/billing-engine/app/Services/TeamSystemService.php",
@@ -121,26 +89,9 @@
       "method": "mapUsageToItemWH property",
       "description": "Array mapping with 3 entries marked \"FIXME: Not found on TeamSystem\" - speculative features that don't exist",
       "metrics": { "fixmeCount": 3, "unusableEntries": 3 }
-    },
-    {
-      "language": "TypeScript",
-      "file": "features/manage-order-modal/components/edit-views/edit-address/components/forms/AddressForm/components.tsx",
-      "line": 59,
-      "method": "AddressFormProps type",
-      "description": "Complex type allowing per-field customization, but feature is never used - customFieldsProps always undefined",
-      "metrics": { "complexity": "High", "usage": "Never" }
     }
   ],
-  "Feature Envy": [
-    {
-      "language": "TypeScript",
-      "file": "features/ship/components/tables/blocks/DocumentationIcon.tsx",
-      "line": 42,
-      "method": "DocumentationIcon component",
-      "description": "Component spending most logic manipulating order.documentation array structure instead of own rendering logic",
-      "metrics": { "dataAccess": "Heavy", "ownLogic": "Minimal" }
-    }
-  ],
+  "Feature Envy": [],
   "Message Chains": [
     {
       "language": "PHP",
