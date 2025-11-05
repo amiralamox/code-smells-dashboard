@@ -1560,13 +1560,15 @@ function renderWorkshopSmells() {
 
 // Create category element
 function createCategory(key, smells) {
-  const categoryNames = {
-    bloaters: 'Bloaters',
-    objectOrientationAbusers: 'OO Abusers',
-    changePreventers: 'Change Preventers',
-    dispensables: 'Dispensables',
-    couplers: 'Couplers'
+  const categoryInfo = {
+    bloaters: { name: 'Bloaters', icon: '📦' },
+    objectOrientationAbusers: { name: 'OO Abusers', icon: '🔧' },
+    changePreventers: { name: 'Change Preventers', icon: '🔒' },
+    dispensables: { name: 'Dispensables', icon: '🗑️' },
+    couplers: { name: 'Couplers', icon: '🔗' }
   };
+
+  const categoryData = categoryInfo[key];
 
   const div = document.createElement('div');
   div.className = 'category';
@@ -1575,10 +1577,11 @@ function createCategory(key, smells) {
   header.className = 'category-header';
   header.innerHTML = `
     <div class="category-title">
-      <span class="category-toggle">▶</span>
-      ${categoryNames[key]}
+      <span class="category-icon">${categoryData.icon}</span>
+      <span class="category-name">${categoryData.name}</span>
+      <span class="category-count">${smells.length}</span>
     </div>
-    <span class="category-count">${smells.length}</span>
+    <span class="category-toggle">▶</span>
   `;
 
   const list = document.createElement('ul');
