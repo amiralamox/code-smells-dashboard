@@ -1484,10 +1484,21 @@ function renderSidebar() {
     return; // Early return since renderWorkshopSmells handles everything
   }
 
-  // Auto-expand first category
-  const firstCategory = nav.querySelector('.category');
-  if (firstCategory) {
-    firstCategory.classList.add('expanded');
+  // Auto-expand categories with search results, or first category if no search
+  if (searchTerm) {
+    // Expand all categories that have matching items
+    nav.querySelectorAll('.category').forEach(category => {
+      const hasVisibleItems = category.querySelector('.smell-list').children.length > 0;
+      if (hasVisibleItems) {
+        category.classList.add('expanded');
+      }
+    });
+  } else {
+    // No search - just expand first category
+    const firstCategory = nav.querySelector('.category');
+    if (firstCategory) {
+      firstCategory.classList.add('expanded');
+    }
   }
 }
 
@@ -1528,7 +1539,14 @@ function renderWorkshopSmells() {
       <ul class="smell-list">
   `;
 
+  let visibleCount = 0;
   workshopSmells.forEach(smell => {
+    // Filter by search term
+    if (searchTerm && !smell.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return;
+    }
+
+    visibleCount++;
     const isLearned = learnedSmells.includes(smell.name);
     const isActive = currentSmell?.name === smell.name ? 'active' : '';
     const learnedClass = isLearned ? 'learned' : '';
@@ -1548,10 +1566,21 @@ function renderWorkshopSmells() {
 
   // Setup category toggle
   const header = nav.querySelector('.category-header');
+  const category = nav.querySelector('.category');
+
   if (header) {
     header.onclick = () => {
-      nav.querySelector('.category').classList.toggle('expanded');
+      category.classList.toggle('expanded');
     };
+  }
+
+  // Auto-expand if search has results, keep expanded if no search
+  if (searchTerm) {
+    if (visibleCount > 0) {
+      category.classList.add('expanded');
+    } else {
+      category.classList.remove('expanded');
+    }
   }
 }
 
