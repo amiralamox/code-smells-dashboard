@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Smells Reference - ShippyPro Engineering Workshop</title>
+    <meta name="description" content="Interactive code smells reference from ShippyPro's AI-Assisted Engineering Workshop. Learn to recognize and fix code smells with real examples.">
+    <meta name="author" content="ShippyPro Engineering">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 class="mobile-title">Code Smells Reference</h1>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>Code Smells</h1>
+            <p class="subtitle">ShippyPro Engineering Workshop</p>
+            <p class="subtitle-small">Based on Martin Fowler's Catalog</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search code smells..." class="form-control">
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="general">General</button>
+            <button class="tab-btn" data-tab="lambda">AWS Lambda</button>
+            <button class="tab-btn" data-tab="workshop">Workshop</button>
+        </div>
+
+        <div class="sidebar-actions">
+            <button class="btn btn--secondary btn--sm btn--full-width" id="randomBtn">
+                🎲 Random Smell
+            </button>
+        </div>
+
+        <nav class="sidebar-nav" id="sidebarNav">
+            <!-- Categories will be populated by JavaScript -->
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalSmells">0</span>
+                    <span class="stat-label">Total Smells</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="learnedCount">0</span>
+                    <span class="stat-label">Learned</span>
+                </div>
+            </div>
+
+            <button class="btn btn--secondary btn--sm btn--full-width"
+                    id="resetProgressBtn"
+                    title="Clear all learned smells"
+                    style="margin-top: 1rem;">
+                🔄 Reset Progress
+            </button>
+
+            <div class="keyboard-hints">
+                <small>
+                    Shortcuts: <kbd>R</kbd> Random · <kbd>/</kbd> Search · <kbd>L</kbd> Mark Learned
+                </small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-content">
+                <h1>Welcome to Code Smells Reference</h1>
+                <p class="welcome-subtitle">Learn to identify and fix common code smells based on Martin Fowler's refactoring catalog</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Comprehensive Catalog</h3>
+                        <p>Explore 20+ code smells across multiple categories</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🐍</div>
+                        <h3>Python Examples</h3>
+                        <p>Real-world examples in Python with before &amp; after comparisons</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">☁️</div>
+                        <h3>AWS Lambda Focus</h3>
+                        <p>Special section for serverless-specific anti-patterns</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✅</div>
+                        <h3>Step-by-Step Fixes</h3>
+                        <p>Actionable refactoring guides for each smell</p>
+                    </div>
+                </div>
+
+                <div class="workshop-links-section">
+                    <h3>🔗 Workshop Resources</h3>
+                    <div class="workshop-links-grid">
+                        <a href="https://github.com/ShippyPro/refactoring-workshop-skills"
+                           target="_blank"
+                           class="workshop-resource-card">
+                            <span class="resource-icon">📦</span>
+                            <span class="resource-title">Workshop Materials</span>
+                            <span class="resource-desc">Claude Code Skills & Examples</span>
+                        </a>
+                        <a href="https://github.com/ShippyPro/refactoring-workshop-skills/blob/main/docs/Workshop-Skills-Usage-Guide.md"
+                           target="_blank"
+                           class="workshop-resource-card">
+                            <span class="resource-icon">📖</span>
+                            <span class="resource-title">Skills Guide</span>
+                            <span class="resource-desc">How to use the workshop skills</span>
+                        </a>
+                        <a href="https://github.com/ShippyPro/refactoring-workshop-skills/issues"
+                           target="_blank"
+                           class="workshop-resource-card">
+                            <span class="resource-icon">💬</span>
+                            <span class="resource-title">Questions? Create an Issue</span>
+                            <span class="resource-desc">Get help from the community</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-icon">💡</div>
+                    <div>
+                        <strong>Did you know?</strong>
+                        <p id="randomTip"></p>
+                    </div>
+                </div>
+
+                <button class="btn btn--primary btn--lg" onclick="document.querySelector('.smell-item').click()">
+                    Get Started →
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area" id="contentArea" style="display: none;">
+            <!-- Header -->
+            <div class="content-header">
+                <div class="header-main">
+                    <h1 id="smellTitle"></h1>
+                    <div class="header-badges" id="categoryBadge">
+                        <!-- Badges will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn--secondary btn--sm" id="shareBtn" title="Share this smell">
+                        🔗 Share
+                    </button>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="learnedCheckbox">
+                        <span>Mark as learned</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Brief Description -->
+            <div class="section">
+                <p class="brief-description" id="briefDescription"></p>
+            </div>
+
+            <!-- What to Look For -->
+            <div class="section">
+                <h2>⚠️ What to Look For</h2>
+                <ul class="indicator-list" id="indicatorList"></ul>
+            </div>
+
+            <!-- AWS Lambda Specific: Why This Matters -->
+            <div class="section lambda-why" id="lambdaWhy" style="display: none;">
+                <h2>💰 Why This Matters in Lambda</h2>
+                <p id="lambdaWhyContent"></p>
+            </div>
+
+            <!-- Code Examples -->
+            <div class="section">
+                <h2>🐍 Real-World Python Example</h2>
+                <div class="code-comparison">
+                    <div class="code-panel code-panel--bad">
+                        <div class="code-panel-header">
+                            <span class="code-panel-title">❌ Problem Code</span>
+                            <button class="copy-btn" data-target="badCode">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <pre><code class="language-python" id="badCode"></code></pre>
+                    </div>
+                    <div class="code-panel code-panel--good">
+                        <div class="code-panel-header">
+                            <span class="code-panel-title">✅ Refactored Code</span>
+                            <button class="copy-btn" data-target="goodCode">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <pre><code class="language-python" id="goodCode"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to Fix It -->
+            <div class="section">
+                <h2>🔧 How to Fix It</h2>
+                <ol class="fix-steps" id="fixSteps"></ol>
+            </div>
+
+            <!-- Refactoring Techniques -->
+            <div class="section" id="techniquesSection">
+                <h2>📖 Refactoring Techniques</h2>
+                <div class="techniques" id="techniquesList"></div>
+            </div>
+        </div>
+
+        <!-- Footer Attribution -->
+        <footer class="main-footer">
+            <p>
+                Built for <strong>ShippyPro Engineering Workshop</strong> ·
+                Based on <a href="https://refactoring.com/catalog/" target="_blank">Martin Fowler's Refactoring Catalog</a> ·
+                <a href="https://github.com/ShippyPro/refactoring-workshop-skills" target="_blank">View on GitHub</a>
+            </p>
+        </footer>
+    </main>
+
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👋 Welcome to Code Smells Reference</h2>
+                <button class="modal-close" onclick="closeWelcomeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>This interactive dashboard is part of ShippyPro's AI-Assisted Engineering Workshop.</strong></p>
+
+                <h3>📚 What You'll Find Here</h3>
+                <ul>
+                    <li>✓ All 11 code smells from Session 1</li>
+                    <li>✓ Side-by-side bad vs. good examples</li>
+                    <li>✓ Step-by-step fix instructions</li>
+                    <li>✓ Search and random practice mode</li>
+                </ul>
+
+                <h3>🎯 How to Use</h3>
+                <ol>
+                    <li>Browse smells by category or use the <strong>Workshop</strong> tab</li>
+                    <li>Click any smell to see examples and fixes</li>
+                    <li>Mark smells as "learned" to track your progress</li>
+                    <li>Use <strong>Random Smell</strong> for practice</li>
+                </ol>
+
+                <h3>🔗 Workshop Materials</h3>
+                <p>
+                    <a href="https://github.com/ShippyPro/refactoring-workshop-skills" target="_blank">
+                        📦 Download Claude Code Skills & Examples
+                    </a>
+                </p>
+
+                <div class="modal-footer">
+                    <label>
+                        <input type="checkbox" id="dontShowAgain"> Don't show this again
+                    </label>
+                    <button class="btn btn--primary" onclick="closeWelcomeModal()">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

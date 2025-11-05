@@ -1,0 +1,164 @@
+{
+  "Lambda Monolith": {
+    "brief": "A single Lambda function that contains too much business logic and handles multiple responsibilities",
+    "indicators": [
+      "Function code exceeds 500+ lines",
+      "Handles multiple unrelated event types",
+      "Long cold start times",
+      "Difficult to test and maintain"
+    ],
+    "refactoring_steps": [
+      "Identify distinct responsibilities within the function",
+      "Extract each responsibility into a separate Lambda function",
+      "Use Step Functions to orchestrate multiple smaller functions",
+      "Use EventBridge to route events to appropriate handlers"
+    ],
+    "category": "Bloaters"
+  },
+  "Synchronous Waiting": {
+    "brief": "Lambda function that waits synchronously for external operations to complete",
+    "indicators": [
+      "Using time.sleep() or similar blocking calls",
+      "Polling for job completion",
+      "Wasting billable execution time",
+      "Risk of timeout errors"
+    ],
+    "refactoring_steps": [
+      "Replace polling with Step Functions callback patterns",
+      "Use asynchronous invocations with destinations",
+      "Leverage EventBridge for event-driven coordination",
+      "Use DynamoDB Streams for state changes"
+    ],
+    "category": "Performance Anti-patterns"
+  },
+  "Global Variable Reinitialization": {
+    "brief": "Reinitializing expensive resources on every invocation instead of reusing execution context",
+    "indicators": [
+      "Database connections created inside handler",
+      "SDK clients initialized in handler",
+      "Configuration fetched on every invocation",
+      "Higher latency and costs"
+    ],
+    "refactoring_steps": [
+      "Move resource initialization outside the handler function",
+      "Initialize connections/clients at module level",
+      "Cache configuration data in global variables",
+      "Implement connection pooling where appropriate"
+    ],
+    "category": "Performance Anti-patterns"
+  },
+  "Fat Deployment Package": {
+    "brief": "Lambda deployment package includes unnecessary dependencies and files",
+    "indicators": [
+      "Package size over 50MB",
+      "Includes entire SDK when only few services needed",
+      "Contains test files and documentation",
+      "Slow cold start times"
+    ],
+    "refactoring_steps": [
+      "Import only specific modules needed (e.g., from boto3 import client)",
+      "Remove development dependencies from deployment",
+      "Use Lambda Layers for shared dependencies",
+      "Minimize package by excluding unnecessary files"
+    ],
+    "category": "Performance Anti-patterns"
+  },
+  "Recursive Invocation": {
+    "brief": "Lambda function that can invoke itself directly or indirectly, creating infinite loops",
+    "indicators": [
+      "Function writes to same S3 bucket that triggers it",
+      "Function sends messages that trigger itself",
+      "Uncontrolled concurrency spikes",
+      "Unexpected high costs"
+    ],
+    "refactoring_steps": [
+      "Use naming conventions or metadata to prevent re-triggering",
+      "Separate input and output resources",
+      "Set reserved concurrency limits as safeguard",
+      "Implement CloudWatch alarms for unusual invocation patterns"
+    ],
+    "category": "Dangerous Patterns"
+  },
+  "Missing Error Handling": {
+    "brief": "Lambda function without proper error handling and retry logic",
+    "indicators": [
+      "No try-except blocks around external calls",
+      "No dead letter queue configured",
+      "Silent failures",
+      "No structured logging"
+    ],
+    "refactoring_steps": [
+      "Wrap external calls in try-except blocks",
+      "Configure DLQ for asynchronous invocations",
+      "Use structured logging with correlation IDs",
+      "Implement exponential backoff for retries",
+      "Define custom error types for different failure scenarios"
+    ],
+    "category": "Reliability Anti-patterns"
+  },
+  "Hardcoded Configuration": {
+    "brief": "Configuration values embedded directly in code instead of using environment variables or parameter store",
+    "indicators": [
+      "API keys in code",
+      "Database connection strings hardcoded",
+      "Environment-specific values in code",
+      "Difficulty deploying across environments"
+    ],
+    "refactoring_steps": [
+      "Use Lambda environment variables for configuration",
+      "Store secrets in AWS Secrets Manager",
+      "Use Systems Manager Parameter Store for config",
+      "Access values at runtime, cache in global scope"
+    ],
+    "category": "Configuration Anti-patterns"
+  },
+  "Overprivileged IAM Role": {
+    "brief": "Lambda execution role with more permissions than necessary",
+    "indicators": [
+      "Using managed policies like AdministratorAccess",
+      "Wildcard (*) actions or resources",
+      "Permissions for unused services",
+      "Security compliance issues"
+    ],
+    "refactoring_steps": [
+      "Apply principle of least privilege",
+      "Grant only specific actions needed",
+      "Scope permissions to specific resources",
+      "Use condition keys to further restrict access",
+      "Regularly audit and remove unused permissions"
+    ],
+    "category": "Security Anti-patterns"
+  },
+  "Stateful Lambda Function": {
+    "brief": "Lambda function that relies on local state between invocations",
+    "indicators": [
+      "Storing state in /tmp without external backup",
+      "Relying on in-memory state across invocations",
+      "Race conditions in concurrent executions",
+      "Data loss when execution context is recycled"
+    ],
+    "refactoring_steps": [
+      "Store state in DynamoDB or S3",
+      "Design functions to be stateless and idempotent",
+      "Use /tmp only for temporary processing",
+      "Implement external state management services"
+    ],
+    "category": "Design Anti-patterns"
+  },
+  "Lambda Calling Lambda": {
+    "brief": "Direct synchronous invocations between Lambda functions creating tight coupling",
+    "indicators": [
+      "Using lambda:InvokeFunction directly",
+      "Synchronous request-response patterns",
+      "Nested error handling complexity",
+      "Timeout propagation issues"
+    ],
+    "refactoring_steps": [
+      "Use SQS queue between functions for buffering",
+      "Implement asynchronous invocations with Destinations",
+      "Use EventBridge for event routing",
+      "Consider Step Functions for orchestration"
+    ],
+    "category": "Architecture Anti-patterns"
+  }
+}

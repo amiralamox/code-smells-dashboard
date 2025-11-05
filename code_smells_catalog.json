@@ -1,0 +1,303 @@
+{
+  "Bloaters": [
+    {
+      "name": "Long Method",
+      "brief": "A method that has grown too large and does too many things",
+      "indicators": [
+        "Methods longer than 10-15 lines",
+        "Multiple levels of abstraction",
+        "Hard to understand at a glance"
+      ],
+      "refactoring_techniques": [
+        "Extract Method",
+        "Replace Temp with Query",
+        "Introduce Parameter Object",
+        "Preserve Whole Object"
+      ]
+    },
+    {
+      "name": "Large Class",
+      "brief": "A class that is trying to do too much with too many instance variables and methods",
+      "indicators": [
+        "Too many fields",
+        "Too many methods",
+        "Duplicate code",
+        "Low cohesion"
+      ],
+      "refactoring_techniques": [
+        "Extract Class",
+        "Extract Subclass",
+        "Extract Interface",
+        "Replace Data Value with Object"
+      ]
+    },
+    {
+      "name": "Long Parameter List",
+      "brief": "A method that has more than 3-4 parameters",
+      "indicators": [
+        "Methods with 4+ parameters",
+        "Difficulty understanding method calls",
+        "Changes require updating many call sites"
+      ],
+      "refactoring_techniques": [
+        "Replace Parameter with Method Call",
+        "Preserve Whole Object",
+        "Introduce Parameter Object"
+      ]
+    },
+    {
+      "name": "Data Clumps",
+      "brief": "Groups of variables that always appear together but aren't organized into a class",
+      "indicators": [
+        "Same group of parameters in multiple methods",
+        "Same fields in multiple classes"
+      ],
+      "refactoring_techniques": [
+        "Extract Class",
+        "Introduce Parameter Object",
+        "Preserve Whole Object"
+      ]
+    },
+    {
+      "name": "Primitive Obsession",
+      "brief": "Using primitive types instead of small objects for simple tasks",
+      "indicators": [
+        "Use of primitives instead of small objects",
+        "Type codes",
+        "Field names that include type info"
+      ],
+      "refactoring_techniques": [
+        "Replace Data Value with Object",
+        "Replace Type Code with Class",
+        "Replace Type Code with Subclasses",
+        "Extract Class"
+      ]
+    }
+  ],
+  "Object-Orientation Abusers": [
+    {
+      "name": "Switch Statements",
+      "brief": "Complex switch or if-else-if chains that should be replaced with polymorphism",
+      "indicators": [
+        "Switch on type code",
+        "Duplicate switches",
+        "Adding new cases requires finding all switches"
+      ],
+      "refactoring_techniques": [
+        "Replace Conditional with Polymorphism",
+        "Replace Type Code with Subclasses",
+        "Replace Type Code with State/Strategy",
+        "Replace Parameter with Explicit Methods"
+      ]
+    },
+    {
+      "name": "Temporary Field",
+      "brief": "Instance variables that are only set in certain circumstances",
+      "indicators": [
+        "Fields used only sometimes",
+        "Null checks for fields",
+        "Complex initialization logic"
+      ],
+      "refactoring_techniques": [
+        "Extract Class",
+        "Introduce Null Object"
+      ]
+    },
+    {
+      "name": "Refused Bequest",
+      "brief": "A subclass uses only some of the methods/properties inherited from parents",
+      "indicators": [
+        "Subclass doesn't use inherited behavior",
+        "Inheritance hierarchy doesn't make sense"
+      ],
+      "refactoring_techniques": [
+        "Replace Inheritance with Delegation",
+        "Push Down Method",
+        "Push Down Field"
+      ]
+    },
+    {
+      "name": "Alternative Classes with Different Interfaces",
+      "brief": "Two classes that do similar things but have different method names",
+      "indicators": [
+        "Similar functionality, different names",
+        "Duplicated code with different interfaces"
+      ],
+      "refactoring_techniques": [
+        "Rename Method",
+        "Move Method",
+        "Extract Superclass"
+      ]
+    }
+  ],
+  "Change Preventers": [
+    {
+      "name": "Divergent Change",
+      "brief": "One class is commonly changed in different ways for different reasons",
+      "indicators": [
+        "Class changes for multiple unrelated reasons",
+        "Multiple types of modifications"
+      ],
+      "refactoring_techniques": [
+        "Extract Class",
+        "Extract Superclass",
+        "Extract Subclass"
+      ]
+    },
+    {
+      "name": "Shotgun Surgery",
+      "brief": "A single change requires many small changes to many different classes",
+      "indicators": [
+        "Making one change requires modifying many classes",
+        "Related data/methods spread across classes"
+      ],
+      "refactoring_techniques": [
+        "Move Method",
+        "Move Field",
+        "Inline Class"
+      ]
+    },
+    {
+      "name": "Parallel Inheritance Hierarchies",
+      "brief": "When creating a subclass for one class requires creating a subclass for another",
+      "indicators": [
+        "Paired class hierarchies",
+        "Similar naming patterns across hierarchies"
+      ],
+      "refactoring_techniques": [
+        "Move Method",
+        "Move Field"
+      ]
+    }
+  ],
+  "Dispensables": [
+    {
+      "name": "Comments",
+      "brief": "Comments are used to explain bad code instead of making the code self-explanatory",
+      "indicators": [
+        "Comments explaining what code does",
+        "Long comment blocks",
+        "Commented-out code"
+      ],
+      "refactoring_techniques": [
+        "Extract Method",
+        "Rename Method",
+        "Introduce Assertion"
+      ]
+    },
+    {
+      "name": "Duplicate Code",
+      "brief": "The same code structure appears in more than one place",
+      "indicators": [
+        "Identical code in multiple places",
+        "Similar code with slight variations",
+        "Copy-paste programming"
+      ],
+      "refactoring_techniques": [
+        "Extract Method",
+        "Pull Up Method",
+        "Form Template Method",
+        "Substitute Algorithm"
+      ]
+    },
+    {
+      "name": "Lazy Class",
+      "brief": "A class that doesn't do enough to justify its existence",
+      "indicators": [
+        "Class with few methods/fields",
+        "Class that delegates most work",
+        "Recently refactored class"
+      ],
+      "refactoring_techniques": [
+        "Inline Class",
+        "Collapse Hierarchy"
+      ]
+    },
+    {
+      "name": "Dead Code",
+      "brief": "Code that is never executed or used",
+      "indicators": [
+        "Unreachable code",
+        "Unused methods/variables",
+        "Commented code left in"
+      ],
+      "refactoring_techniques": [
+        "Delete the code",
+        "Inline Method",
+        "Collapse Hierarchy"
+      ]
+    },
+    {
+      "name": "Speculative Generality",
+      "brief": "Code created for anticipated future needs that never materialize",
+      "indicators": [
+        "Unused abstract classes",
+        "Unnecessary delegation",
+        "Unused parameters"
+      ],
+      "refactoring_techniques": [
+        "Collapse Hierarchy",
+        "Inline Class",
+        "Remove Parameter",
+        "Rename Method"
+      ]
+    }
+  ],
+  "Couplers": [
+    {
+      "name": "Feature Envy",
+      "brief": "A method that accesses the data of another object more than its own data",
+      "indicators": [
+        "Method uses more features from other classes",
+        "Method seems to belong elsewhere"
+      ],
+      "refactoring_techniques": [
+        "Move Method",
+        "Extract Method",
+        "Move Field"
+      ]
+    },
+    {
+      "name": "Inappropriate Intimacy",
+      "brief": "One class uses internal fields and methods of another class too much",
+      "indicators": [
+        "Classes know too much about each other",
+        "Tight coupling between classes"
+      ],
+      "refactoring_techniques": [
+        "Move Method",
+        "Move Field",
+        "Change Bidirectional Association to Unidirectional",
+        "Extract Class",
+        "Hide Delegate",
+        "Replace Inheritance with Delegation"
+      ]
+    },
+    {
+      "name": "Message Chains",
+      "brief": "A client asks one object for another object, which asks for another, etc.",
+      "indicators": [
+        "Long chains like a.b().c().d()",
+        "Client depends on navigation structure"
+      ],
+      "refactoring_techniques": [
+        "Hide Delegate",
+        "Extract Method",
+        "Move Method"
+      ]
+    },
+    {
+      "name": "Middle Man",
+      "brief": "A class that does nothing but delegate to another class",
+      "indicators": [
+        "Most methods just delegate",
+        "Class has little functionality of its own"
+      ],
+      "refactoring_techniques": [
+        "Remove Middle Man",
+        "Inline Method",
+        "Replace Delegation with Inheritance"
+      ]
+    }
+  ]
+}
